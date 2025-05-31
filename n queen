@@ -1,0 +1,65 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 20
+
+int board[MAX];
+static int solutionCount = 0;
+
+void printSolution(int n) {
+
+    printf("Solution %d:\n", solutionCount++);
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i] == j)
+                printf("Q ");
+            else
+                printf(". ");
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+int isSafe(int row, int col) {
+    for (int i = 0; i < row; i++) {
+
+        if (board[i] == col || abs(board[i] - col) == abs(i - row))
+            return 0;
+    }
+    return 1;
+}
+
+void solveNQueens(int row, int n) {
+    if (row == n) {
+        printSolution(n);
+        return;
+    }
+
+    for (int col = 0; col < n; col++) {
+        if (isSafe(row, col)) {
+            board[row] = col;
+            solveNQueens(row + 1, n);
+        }
+    }
+}
+
+int main() {
+    int n;
+    printf("Enter the number of queens (n): ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > MAX) {
+        printf("Please enter n between 1 and %d\n", MAX);
+        return 1;
+    }
+
+    printf("Solving %d-Queens problem...\n\n", n);
+    if(n==2||n==3){
+        printf("No solutions");
+        return 0;
+}
+    solveNQueens(0, n);
+    printf("No. of solutions:%d", solutionCount);
+    return 0;
+}
